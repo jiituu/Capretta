@@ -11,7 +11,7 @@
 :root{
   color-scheme: dark;
   --base:#121212; --ink:#EAE8E3; --soft:#A9A7A1; --faint:#6E6D69; --line:rgba(234,232,227,.18); --panel:#1A1A19; --ghost:rgba(234,232,227,.06);
-  --tint:#121212; --mix:12%;
+  --tint:#121212; --mix:0%;
   --font:'Archivo','Helvetica Neue',Arial,sans-serif;
   --lw:min(36vw, 530px, 62vh);
 }
@@ -430,7 +430,7 @@ w.innerHTML = [...txt].map((c, i) => `<span aria-hidden="true" style="animation-
 
 /* build space */
 const space = $('#space');
-const FL = ['23','20','05','15','26','13'].map(r => LOOKS.findIndex(l => l.room === r));   // the six looks in the scroll teaser
+const FL = ['23','20','05','15','26','31'].map(r => LOOKS.findIndex(l => l.room === r));   // the six looks in the scroll teaser
 const NF = FL.length;
 const items = FL.map((li, i) => {
   const l = LOOKS[li];
