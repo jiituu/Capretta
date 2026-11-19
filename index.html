@@ -13,7 +13,7 @@
   --base:#121212; --ink:#EAE8E3; --soft:#A9A7A1; --faint:#6E6D69; --line:rgba(234,232,227,.18); --panel:#1A1A19; --ghost:rgba(234,232,227,.06);
   --tint:#121212; --mix:12%;
   --font:'Archivo','Helvetica Neue',Arial,sans-serif;
-  --lw:min(32vw, 470px, 56vh);
+  --lw:min(36vw, 530px, 62vh);
 }
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *,*::before,*::after{box-sizing:inherit}
@@ -126,7 +126,7 @@ a{color:inherit}
 .tile .tn span:last-child{color:var(--soft)}
 
 @media (max-width:820px){
-  :root{--lw:min(66vw, 50vh)}
+  :root{--lw:min(74vw, 54vh)}
   .hero-bg{grid-template-columns:1fr}
   .hero-bg img:last-child{display:none}
   .detail{grid-template-columns:1fr}
@@ -271,7 +271,7 @@ function progress(){
   return Math.min(1, Math.max(0, -r.top / total));
 }
 const P = 1100;
-function slope(){ return innerWidth < 700 ? {x:0.16, y:-0.36, bx:0, by:innerHeight * 0.07, far:2.6} : {x:0.7, y:-0.05, bx:-innerWidth * 0.08, by:0, far:4.6}; }
+function slope(){ return innerWidth < 700 ? {x:0, y:0, bx:0, by:innerHeight * 0.04, far:1.2} : {x:0, y:0, bx:0, by:0, far:1.2}; }
 function frame(){
   const tt = progress() * (N - 1), base = Math.floor(tt), f = tt - base;
   const eased = f * f * f * (f * (f * 6 - 15) + 10);
@@ -281,11 +281,11 @@ function frame(){
   mx += (tmx - mx) * 0.06; my += (tmy - my) * 0.06;
   const sl = slope();
   items.forEach((el, i) => {
-    const rel = i * D - cam + 260;     // distance in front of the camera
+    const rel = i * D - cam + 160;     // distance in front of the camera
     if (rel < -290 || rel > D * sl.far){ el.style.visibility = 'hidden'; return; }
     el.style.visibility = 'visible';
     let o = 1;
-    if (rel > D * (sl.far - 1.2)) o = Math.max(0, 1 - (rel - D * (sl.far - 1.2)) / (D * 1.2));
+    if (rel > 160) o = Math.max(0, 1 - (rel - 160) / (D * 0.62));   // the next look only appears once the current one starts to pass
     if (rel < 0) o = Math.max(0, 1 + rel / 280);
     const ahead = Math.max(0, rel - 260);          // the look in focus sits centred; the next ones wait in a line behind it
     const sc = P / (P + rel);                      // perspective scale, done by hand so stacking is always predictable
@@ -294,7 +294,7 @@ function frame(){
     el.style.opacity = o.toFixed(3);
     el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${sc.toFixed(4)})`;
     el.style.zIndex = String(Math.round(20000 - rel));
-    el.style.pointerEvents = (rel >= -40 && rel < D * 3.4 && o > 0.35) ? 'auto' : 'none';
+    el.style.pointerEvents = (rel >= -40 && o > 0.6) ? 'auto' : 'none';
   });
   const idx = Math.min(N - 1, Math.max(0, Math.round(cam / D)));
   if (idx !== current) setCurrent(idx);
